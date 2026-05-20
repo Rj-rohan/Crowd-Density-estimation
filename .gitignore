@@ -8,6 +8,10 @@ backend/ShanghaiTech/**/maps/
 # ── YOLO auto-downloaded weights (auto-downloaded, not needed in repo) ────────
 yolo*.pt
 
+# ── Environment / secrets ────────────────────────────────────────────────────
+.env
+backend/.env
+
 # ── Database ──────────────────────────────────────────────────────────────────
 backend/*.db
 backend/*.sqlite

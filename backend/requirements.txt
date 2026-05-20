@@ -8,3 +8,5 @@ numpy>=1.26.0
 scipy>=1.13.0
 Pillow>=10.3.0
 python-multipart==0.0.9
+twilio>=9.0.0
+python-dotenv>=1.0.0

@@ -11,6 +11,7 @@ import os
 from utils.detector import PersonDetector
 from utils.tracker import ByteTracker
 from utils.crowd_analyzer import CrowdAnalyzer, get_density_category
+from utils.alerts import send_whatsapp_alert
 from database import init_db, insert_stat, get_recent_stats, get_summary
 
 CSRNET_WEIGHTS = "weights/csrnet_shanghaitech.pth"
@@ -58,6 +59,10 @@ def process_frame(frame: np.ndarray, frame_id: int) -> dict:
     heatmap_b64 = base64.b64encode(hbuf).decode()
 
     insert_stat(frame_id, count, float(density_map.sum()), category, len(tracks), alert)
+
+    # Send WhatsApp alert (cooldown handled inside)
+    if alert:
+        send_whatsapp_alert(int(count), category)
 
     return {
         "frame_id": frame_id,
