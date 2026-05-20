@@ -22,7 +22,7 @@ from utils.detector import PersonDetector
 def evaluate_csrnet(weights="weights/csrnet_shanghaitech.pth", data_root="ShanghaiTech", part="A"):
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model = CSRNet().to(device)
-    model.load_state_dict(torch.load(weights, map_location=device))
+    model.load_state_dict(torch.load(weights, map_location=device, weights_only=True))
     model.eval()
 
     loader = DataLoader(ShanghaiTechDataset(data_root, part, "test_data"), batch_size=1, shuffle=False)
@@ -124,17 +124,17 @@ if __name__ == "__main__":
     parser.add_argument("--video", default=None, help="Optional video path for tracking evaluation")
     args = parser.parse_args()
 
-    print(f"\n── CSRNet Evaluation (ShanghaiTech Part {args.part}) ──")
+    print("\n== CSRNet Evaluation (ShanghaiTech Part", args.part, ")==")
     csrnet_results = evaluate_csrnet(weights=args.weights, part=args.part)
-    print(f"  MAE     : {csrnet_results['mae']}")
-    print(f"  MSE     : {csrnet_results['mse']}")
-    print(f"  Samples : {csrnet_results['samples']}")
+    print("  MAE     :", csrnet_results['mae'])
+    print("  MSE     :", csrnet_results['mse'])
+    print("  Samples :", csrnet_results['samples'])
 
     if args.video:
-        print(f"\n── Tracking Evaluation ({args.video}) ──")
+        print("\n== Tracking Evaluation", args.video, "==")
         tracking_results = evaluate_tracking(args.video)
-        print(f"  MOTA        : {tracking_results.get('mota')}")
-        print(f"  ID Switches : {tracking_results.get('id_switches')}")
-        print(f"  Precision   : {tracking_results.get('precision')}")
-        print(f"  Recall      : {tracking_results.get('recall')}")
-        print(f"  Frames      : {tracking_results.get('total_frames')}")
+        print("  MOTA        :", tracking_results.get('mota'))
+        print("  ID Switches :", tracking_results.get('id_switches'))
+        print("  Precision   :", tracking_results.get('precision'))
+        print("  Recall      :", tracking_results.get('recall'))
+        print("  Frames      :", tracking_results.get('total_frames'))

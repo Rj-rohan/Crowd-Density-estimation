@@ -20,7 +20,7 @@ class CrowdAnalyzer:
         self.device = device
         self.model = CSRNet().to(device)
         if model_path:
-            self.model.load_state_dict(torch.load(model_path, map_location=device))
+            self.model.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
         self.model.eval()
 
     def estimate_density(self, frame: np.ndarray):
