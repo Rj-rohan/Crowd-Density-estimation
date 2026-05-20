@@ -1,0 +1,65 @@
+# ── Dataset (too large for git) ──────────────────────────────────────────────
+backend/ShanghaiTech/
+backend/data/NWPU/
+
+# ── Trained model weights ─────────────────────────────────────────────────────
+backend/weights/*.pth
+backend/weights/*.pt
+
+# ── Generated density maps (re-generated from .mat files) ────────────────────
+backend/ShanghaiTech/**/maps/
+
+# ── YOLO auto-downloaded weights ─────────────────────────────────────────────
+*.pt
+!backend/weights/.gitkeep
+
+# ── Database ──────────────────────────────────────────────────────────────────
+backend/*.db
+backend/*.sqlite
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+.env
+.venv
+venv/
+env/
+
+# ── Jupyter ───────────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDE ───────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.suo
+*.sln
+
+# ── Frontend ──────────────────────────────────────────────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/.local
+*.local
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+*.log
+logs/
+npm-debug.log*
+yarn-error.log*
+
+# ── Temp / upload artifacts ───────────────────────────────────────────────────
+tmp/
+*.tmp
