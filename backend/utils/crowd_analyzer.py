@@ -23,16 +23,33 @@ class CrowdAnalyzer:
             self.model.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
         self.model.eval()
 
-    def estimate_density(self, frame: np.ndarray):
-        """Returns (count, density_map_normalized, heatmap_bgr)."""
+    def estimate_density(self, frame: np.ndarray, yolo_count: int = None):
+        """Returns (count, density_map, heatmap_bgr).
+        
+        count = yolo_count when provided (accurate for sparse scenes).
+        CSRNet density map is used only for heatmap visualization.
+        """
         img = cv2.resize(frame, (640, 480))
-        img_tensor = torch.from_numpy(img.transpose(2, 0, 1)).float().unsqueeze(0) / 255.0
-        img_tensor = img_tensor.to(self.device)
+        # Normalize with ImageNet mean/std (matches training)
+        img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB).astype(np.float32) / 255.0
+        mean = np.array([0.485, 0.456, 0.406], dtype=np.float32)
+        std  = np.array([0.229, 0.224, 0.225], dtype=np.float32)
+        img_norm = (img_rgb - mean) / std
+        img_tensor = torch.from_numpy(img_norm.transpose(2, 0, 1)).unsqueeze(0).to(self.device)
 
         with torch.no_grad():
             density_map = self.model(img_tensor).squeeze().cpu().numpy()
+            density_map = np.maximum(density_map, 0)  # clamp negatives
 
-        count = float(density_map.sum())
+        # CSRNet count (sum of density map)
+        csrnet_count = float(density_map.sum())
+
+        # Use YOLO count for sparse scenes (<=30 detections), CSRNet for dense crowds
+        if yolo_count is not None:
+            count = float(yolo_count) if yolo_count <= 30 else csrnet_count
+        else:
+            count = csrnet_count
+
         density_norm = cv2.normalize(density_map, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
         heatmap = cv2.applyColorMap(density_norm, cv2.COLORMAP_JET)
         heatmap_resized = cv2.resize(heatmap, (frame.shape[1], frame.shape[0]))

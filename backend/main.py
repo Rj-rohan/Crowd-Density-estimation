@@ -46,7 +46,8 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], all
 def process_frame(frame: np.ndarray, frame_id: int) -> dict:
     detections = detector.detect(frame)
     tracks = tracker.update(detections)
-    count, density_map, heatmap = analyzer.estimate_density(frame)
+    yolo_count = len(detections)
+    count, density_map, heatmap = analyzer.estimate_density(frame, yolo_count=yolo_count)
     category = get_density_category(count)
     alert = analyzer.check_alert(count)
 
