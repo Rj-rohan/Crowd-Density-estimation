@@ -2,16 +2,11 @@
 backend/ShanghaiTech/
 backend/data/NWPU/
 
-# ── Trained model weights ─────────────────────────────────────────────────────
-backend/weights/*.pth
-backend/weights/*.pt
-
 # ── Generated density maps (re-generated from .mat files) ────────────────────
 backend/ShanghaiTech/**/maps/
 
-# ── YOLO auto-downloaded weights ─────────────────────────────────────────────
-*.pt
-!backend/weights/.gitkeep
+# ── YOLO auto-downloaded weights (auto-downloaded, not needed in repo) ────────
+yolo*.pt
 
 # ── Database ──────────────────────────────────────────────────────────────────
 backend/*.db
