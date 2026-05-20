@@ -44,6 +44,19 @@ def get_recent_stats(limit=100):
     ]
 
 
+def get_alert_history(limit=50):
+    with sqlite3.connect(DB_PATH) as conn:
+        rows = conn.execute(
+            "SELECT timestamp, frame_id, person_count, density_category, alert "
+            "FROM crowd_stats WHERE alert IS NOT NULL ORDER BY id DESC LIMIT ?", (limit,)
+        ).fetchall()
+    return [
+        {"timestamp": r[0], "frame_id": r[1], "person_count": r[2],
+         "density_category": r[3], "alert": r[4]}
+        for r in rows
+    ]
+
+
 def get_summary():
     with sqlite3.connect(DB_PATH) as conn:
         row = conn.execute(

@@ -12,7 +12,8 @@ from utils.detector import PersonDetector
 from utils.tracker import ByteTracker
 from utils.crowd_analyzer import CrowdAnalyzer, get_density_category
 from utils.alerts import send_whatsapp_alert
-from database import init_db, insert_stat, get_recent_stats, get_summary
+from database import init_db, insert_stat, get_recent_stats, get_summary, get_alert_history
+from evaluate import evaluate_csrnet
 
 CSRNET_WEIGHTS = "weights/csrnet_shanghaitech.pth"
 YOLO_MODEL = "yolo11n.pt"
@@ -135,3 +136,15 @@ def recent_stats(limit: int = 100):
 @app.get("/stats/summary")
 def stats_summary():
     return get_summary()
+
+
+@app.get("/alerts/history")
+def alerts_history(limit: int = 50):
+    return get_alert_history(limit)
+
+
+@app.get("/evaluate")
+def run_evaluate(part: str = "A"):
+    if not os.path.exists(CSRNET_WEIGHTS):
+        return {"error": "Model weights not found. Train first."}
+    return evaluate_csrnet(weights=CSRNET_WEIGHTS, part=part)

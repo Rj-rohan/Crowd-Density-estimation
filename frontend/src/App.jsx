@@ -6,6 +6,8 @@ import AlertBanner from "./components/AlertBanner";
 import TrackList from "./components/TrackList";
 import SummaryPanel from "./components/SummaryPanel";
 import HistoryTable from "./components/HistoryTable";
+import EvalPanel from "./components/EvalPanel";
+import AlertHistory from "./components/AlertHistory";
 import "./App.css";
 
 const WS_URL = "ws://localhost:8000/ws/stream";
@@ -168,6 +170,10 @@ export default function App() {
       </div>
 
       <DensityGraph data={history} />
+      <div className="bottom-grid">
+        <AlertHistory />
+        <EvalPanel />
+      </div>
       <HistoryTable rows={dbRows} />
     </div>
   );
