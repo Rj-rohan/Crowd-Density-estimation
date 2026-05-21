@@ -3,7 +3,7 @@ import numpy as np
 
 
 class PersonDetector:
-    def __init__(self, model_path="yolo11n.pt", conf=0.4, device="cpu"):
+    def __init__(self, model_path="yolo11m.pt", conf=0.4, device="cpu"):
         self.model = YOLO(model_path)
         self.conf = conf
         self.device = device

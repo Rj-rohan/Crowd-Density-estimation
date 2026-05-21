@@ -16,7 +16,7 @@ from database import init_db, insert_stat, get_recent_stats, get_summary, get_al
 from evaluate import evaluate_csrnet
 
 CSRNET_WEIGHTS = "weights/csrnet_shanghaitech.pth"
-YOLO_MODEL = "yolo11n.pt"
+YOLO_MODEL = "yolo11m.pt"
 
 detector = None
 tracker = None
